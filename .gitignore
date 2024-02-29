@@ -1,0 +1,8 @@
+# Ignore Parquet files
+files/parquet/*.parquet
+
+# Ignore JSON files
+files/json/*.json
+
+# Ignore virtual environment
+venv/
