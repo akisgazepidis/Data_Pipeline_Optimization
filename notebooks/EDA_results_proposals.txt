@@ -2,7 +2,9 @@
 From a quick exploratory data analysis (EDA) there were some issues detected in the dataset:
 - All columns had null values. 'params' column had 91,72 % of null values
 - Also params column contais dictionaries with 4 keys 'apartment', 'apartments', 'page', 'requests'
+- Timestamp column has unexcpected formats (3 types)
 
 # Proposals
 - Return to the source where this parquet file is created and try to understand why these null values exist. Afterwards try to solve the issue.
--In the pipeline fix the dictionary as 4 new columns
+- In the pipeline fix the dictionary as 4 new columns
+- Fix the timstamp formats during the data pipeline or return to the source

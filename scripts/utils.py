@@ -44,11 +44,11 @@ class ParquetToJson:
             print("Data not read or preprocessed. Please read and preprocess the data first.")
 
 
-if __name__ == "__main__":
-    filepath = 'files/parquet/homelike_assignment_data.parquet'
-    output_filepath = 'files/json/homelike_assignment_data.json'
+# if __name__ == "__main__":
+#     filepath = 'files/parquet/homelike_assignment_data.parquet'
+#     output_filepath = 'files/json/homelike_assignment_data.json'
 
-    converter = ParquetToJson(filepath)
-    converter.read_dataset()
-    converter.preprocess_dataset()
-    converter.export_to_json(output_filepath)
+#     converter = ParquetToJson(filepath)
+#     converter.read_dataset()
+#     converter.preprocess_dataset()
+#     converter.export_to_json(output_filepath)
