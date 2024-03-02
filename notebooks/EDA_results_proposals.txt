@@ -8,3 +8,5 @@ From a quick exploratory data analysis (EDA) there were some issues detected in 
 - Return to the source where this parquet file is created and try to understand why these null values exist. Afterwards try to solve the issue.
 - In the pipeline fix the dictionary as 4 new columns
 - Fix the timstamp formats during the data pipeline or return to the source
+- Replace null values to event_type, user_country, user_agent, page_country, env with value 'Unknown'
+- Fic session_ids that are null , insert values of session_id of other rows that have the same user_agent.
