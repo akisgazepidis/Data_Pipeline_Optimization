@@ -174,7 +174,6 @@ class PostgresFunctions:
             event_type TEXT,
             session_id TEXT,
             user_country TEXT,
-            user_agent TEXT,
             page_country TEXT,
             env TEXT,
             apartment TEXT,
@@ -207,8 +206,8 @@ class PostgresFunctions:
                 parsed_date = dateutil.parser.parse(record['ts'])
                 date = parsed_date.strftime('%d/%m/%Y %H:%M:%S')
 
-                insert_query = f"INSERT INTO fct_customer_events_data ( event_type, session_id, user_country, user_agent, page_country, env, apartment, apartments, page, requests, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                values = ( event_type, session_id, user_country, user_agent, page_country, env, apartment, apartments, page, requests, date )
+                insert_query = f"INSERT INTO fct_customer_events_data ( event_type, session_id, user_country, page_country, env, apartment, apartments, page, requests, date) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = ( event_type, session_id, user_country, page_country, env, apartment, apartments, page, requests, date )
 
                 self.conn.cursor().execute(insert_query, values)
                 self.conn.commit()
