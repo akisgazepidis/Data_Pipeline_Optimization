@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import json
+import requests
+import psycopg2
+import dateutil.parser
 
 class ParquetToJson:
     def __init__(self, filepath):
@@ -109,6 +113,115 @@ class ParquetToJson:
                 print(f"Error exporting data to JSON {e}")
         else:
             print("Data not read or preprocessed. Please read and preprocess the data first.")
+
+class PostgresFunctions:
+    def __init__(self, cred_path, output_filepath):
+        self.cred_path = cred_path
+        self.output_filepath = output_filepath
+
+        with open(cred_path) as json_file:
+            cred_data = json.load(json_file)
+        self.username = cred_data['username']
+        self.password = cred_data['password']
+        self.host = cred_data['host']
+        self.port = cred_data['port']
+        self.db = cred_data['db']
+
+        with open(output_filepath, 'r') as file:
+            self.dict_data = [json.loads(line) for line in file]
+
+
+    def check_postgres_connection(self):
+        try:
+            conn = psycopg2.connect(
+            host=self.host,
+            port=self.port,
+            database=self.db,
+            user=self.username,
+            password=self.password
+            )
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            if cursor.fetchone()[0] == 1:
+                print("Successful Test Connection to PostgreSQL")
+            conn.close()
+            return True
+        except Exception as e:
+            print("Failed test connection to PostgreSQL:", e)
+            return False
+        
+    def create_postgres_connection(self):
+        print('Connecting to Postgres DB...')
+        self.conn = psycopg2.connect(
+                    host=self.host,
+                    port=self.port,
+                    database=self.db,
+                    user=self.username,
+                    password=self.password
+                )
+    
+    def create_postges_table_if_not_exist(self):
+        print('Checking if table exist..')
+        create_table_queries = ["""
+        CREATE TABLE IF NOT EXISTS dim_sessions (
+            session_id TEXT PRIMARY KEY,
+            user_agent TEXT
+        );
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS fct_customer_events_data (
+            customer_events_data_id SERIAL PRIMARY KEY,
+            event_type TEXT,
+            session_id TEXT,
+            user_country TEXT,
+            user_agent TEXT,
+            page_country TEXT,
+            env TEXT,
+            apartment TEXT,
+            apartments TEXT,
+            page TEXT,
+            requests TEXT,
+            date TIMESTAMP
+        );
+        """
+        ]
+        for query in create_table_queries:
+            self.conn.cursor().execute(query)
+            self.conn.commit()
+
+    def update_dim_and_fct_tables(self):
+        print('Updating dimension and fact tables...')
+        counter = 0
+        for record in self.dict_data[0:10]:
+                event_type  = record["event_type"]
+                session_id = record["session_id"]
+                user_country = record["user_country"]
+                user_agent = record['user_agent']
+                page_country = record['page_country']
+                env = record['env']
+                apartment = record['apartment']
+                apartments = str(record['apartments'])
+                page = str(record['page'])
+                requests = record['requests']
+
+                parsed_date = dateutil.parser.parse(record['ts'])
+                date = parsed_date.strftime('%d/%m/%Y %H:%M:%S')
+
+                insert_query = f"INSERT INTO fct_customer_events_data ( event_type, session_id, user_country, user_agent, page_country, env, apartment, apartments, page, requests, date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                values = ( event_type, session_id, user_country, user_agent, page_country, env, apartment, apartments, page, requests, date )
+
+                self.conn.cursor().execute(insert_query, values)
+                self.conn.commit()
+
+
+                insert_query2 = f"INSERT INTO dim_sessions ( session_id, user_agent) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+                values = ( session_id, user_agent )
+
+                self.conn.cursor().execute(insert_query2, values)
+                self.conn.commit()
+
+                counter +=1
+        print(f'{counter} records inserted.')
 
 
 # if __name__ == "__main__":
