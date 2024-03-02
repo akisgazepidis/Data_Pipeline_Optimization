@@ -223,6 +223,9 @@ class PostgresFunctions:
                 counter +=1
         print(f'{counter} records inserted.')
 
+    def close_connection(self):
+        self.conn.cursor().close()
+        self.conn.close()
 
 # if __name__ == "__main__":
 #     filepath = 'files/parquet/homelike_assignment_data.parquet'
