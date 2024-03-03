@@ -3,7 +3,7 @@ import numpy as np
 from datetime import datetime
 import json
 import requests
-import psycopg2
+#import psycopg2
 import dateutil.parser
 
 class ParquetToJson:
@@ -95,6 +95,7 @@ class ParquetToJson:
             self.df['user_agent'] = self.df['user_agent'].apply(self.replace_none_with_unknown)
             self.df['page_country'] = self.df['page_country'].apply(self.replace_none_with_unknown)
             self.df['env'] = self.df['env'].apply(self.replace_none_with_unknown)
+            self.df['ts'] = self.df['ts'].str.replace(',', '')
 
             self.session_id_user_agent_tuple_dict =  self.create_session_id_user_agent_dict(self.df.session_id, self.df.user_agent)
 

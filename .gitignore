@@ -4,5 +4,8 @@ files/parquet/*.parquet
 # Ignore JSON files
 files/json/*.json
 
+# Ignore zip files
+files/zip/*.zip
+
 # Ignore virtual environment
 venv/

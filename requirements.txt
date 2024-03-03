@@ -4,5 +4,6 @@ jupyter
 pyarrow
 fastparquet
 ipykernel
-psycopg2
-requests
+#psycopg2
+#requests
+seaborn
