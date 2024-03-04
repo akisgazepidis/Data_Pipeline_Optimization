@@ -7,3 +7,6 @@ ipykernel
 #psycopg2
 #requests
 seaborn
+scikit-learn
+keras
+tensorflow

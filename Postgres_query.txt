@@ -1,5 +1,0 @@
-select fced.*,ds."user_agent" 
-from fct_customer_events_data fced
-join dim_sessions ds
-on fced."session_id" = ds."session_id"
-;
