@@ -3,7 +3,7 @@ This repo contains a case study for a data pipeline optimization. The input is a
 such as cleaning, fixing types of data and finally stores some information to two SQL Postgres Database.
 
 # Repo Structure:
-
+`
 DATA_PIPELINE_OPTIMIZATION/
 ├── files/                         # Datasets and raw data files
 │   └── parquet/                   # Parquet files
@@ -15,7 +15,7 @@ DATA_PIPELINE_OPTIMIZATION/
 ├── README.md                      # Project documentation
 ├── requirements.txt               # Packages need to be installed
 └── run.py                         # File rto run the data pipeline
-
+`
 # How to  Begin
 
 Clone the repo localy in your pc and create a virtual environment:
