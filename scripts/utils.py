@@ -226,12 +226,3 @@ class PostgresFunctions:
     def close_connection(self):
         self.conn.cursor().close()
         self.conn.close()
-
-# if __name__ == "__main__":
-#     filepath = 'files/parquet/homelike_assignment_data.parquet'
-#     output_filepath = 'files/json/homelike_assignment_data.json'
-
-#     converter = ParquetToJson(filepath)
-#     converter.read_dataset()
-#     converter.preprocess_dataset()
-#     converter.export_to_json(output_filepath)
