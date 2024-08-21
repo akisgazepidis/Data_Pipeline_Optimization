@@ -9,3 +9,4 @@ files/zip/*.zip
 
 # Ignore virtual environment
 venv/
+
